@@ -1,7 +1,7 @@
 import { getCurrentWeather, getWeatherForecast } from "./fetch";
 import "./main.scss";
 
-const currentLocation = "London";
+const currentLocation = "Ansbach";
 const language = "de";
 
 function renderLoadScreen() {
@@ -96,19 +96,47 @@ async function renderData() {
       </div>
       </div>`;
 
+  // start rendering of hourlyForecastDetails
+  function getHourTemperature(time) {
+    return forecastWatherData.forecast.forecastday[0].hour[time].temp_c;
+  }
+
+  function getHourIcon(time) {
+    return forecastWatherData.forecast.forecastday[0].hour[time].condition.icon;
+  }
+
   let hourlyForecastDetailsEl = document.querySelector(
     ".hourly-forecast__details",
   );
 
-  let testH = [1, 2, 3, 4, 5, 6, 7];
+  let i = hour;
 
-  for (let num of testH) {
+  while (i <= 22) {
     hourlyForecastDetailsEl.innerHTML += `<div class="hour-block">
-            <div class="hour-block__hour">${hour + num} Uhr</div>
+            <div class="hour-block__hour">${i + 1} Uhr</div>
             <div class="hour-block__icon">blabla</div>
             <div class="hour-block__temperature">17°</div>
           </div>`;
+    i++;
   }
+
+  i = 0;
+
+  while (i <= hour - 1) {
+    let zero;
+    if (i < 10) {
+      zero = 0;
+    } else {
+      zero = "";
+    }
+    hourlyForecastDetailsEl.innerHTML += `<div class="hour-block">
+            <div class="hour-block__hour">${zero}${i} Uhr</div>
+            <img class="hour-block__icon" src="https://${getHourIcon(i)}" alt="Weather icon">
+            <div class="hour-block__temperature">${getHourTemperature(i)}°</div>
+          </div>`;
+    i++;
+  }
+  // finish rendering of hourlyForecastDetails
 }
 
 async function init() {
