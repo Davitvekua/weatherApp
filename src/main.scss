@@ -1,6 +1,7 @@
 @use "mixins";
 @use "variable";
 @use "loading";
+@use "hourlyForecast";
 
 * {
   margin: 0;

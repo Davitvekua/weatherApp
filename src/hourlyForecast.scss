@@ -1,0 +1,40 @@
+.general-container {
+  margin-inline: auto;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px #0000004d;
+  backdrop-filter: blur(35px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.8rem;
+}
+
+.hourly-forecast {
+  width: 92%;
+  margin-top: 2rem;
+
+  &__heading {
+    font-weight: 500;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid rgb(96, 96, 96);
+  }
+
+  &__details {
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.9rem;
+    overflow-x: auto;
+    margin-top: 0.8rem;
+  }
+}
+
+.hour-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  &__temperature {
+    padding-bottom: 0.8rem;
+  }
+}

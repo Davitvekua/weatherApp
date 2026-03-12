@@ -1,7 +1,7 @@
 import { getCurrentWeather, getWeatherForecast } from "./fetch";
 import "./main.scss";
 
-const currentLocation = "Ansbach";
+const currentLocation = "London";
 const language = "de";
 
 function renderLoadScreen() {
@@ -22,6 +22,11 @@ function renderLoadScreen() {
 async function renderData() {
   let currentWatherData = await getCurrentWeather(currentLocation, language);
   let forecastWatherData = await getWeatherForecast(currentLocation, language);
+
+  let currentTime = currentWatherData.location.localtime;
+  let hour = Number(currentTime.split(" ")[1].split(":")[0]);
+  console.log(hour);
+
   const weatherMainDataEl = document.querySelector(".app");
   weatherMainDataEl.innerHTML = "";
   weatherMainDataEl.innerHTML = `<div class="main-display">
@@ -77,7 +82,33 @@ async function renderData() {
             >
           </div>
         </div>
+        <div class="hourly-forecast general-container">
+        <div class="hourly-forecast__heading">
+          Heute ${currentWatherData.current.condition.text}. Wind bis zu ${Math.floor(currentWatherData.current.wind_kph)} km/h.
+        </div>
+        <div class="hourly-forecast__details">
+          <div class="hour-block">
+            <div class="hour-block__hour">jetzt</div>
+            <div class="hour-block__icon">blabla</div>
+            <div class="hour-block__temperature">17°</div>
+          </div> 
+        </div>
+      </div>
       </div>`;
+
+  let hourlyForecastDetailsEl = document.querySelector(
+    ".hourly-forecast__details",
+  );
+
+  let testH = [1, 2, 3, 4, 5, 6, 7];
+
+  for (let num of testH) {
+    hourlyForecastDetailsEl.innerHTML += `<div class="hour-block">
+            <div class="hour-block__hour">${hour + num} Uhr</div>
+            <div class="hour-block__icon">blabla</div>
+            <div class="hour-block__temperature">17°</div>
+          </div>`;
+  }
 }
 
 async function init() {
