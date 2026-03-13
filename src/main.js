@@ -25,7 +25,6 @@ async function renderData() {
 
   let currentTime = currentWatherData.location.localtime;
   let hour = Number(currentTime.split(" ")[1].split(":")[0]);
-  console.log(hour);
 
   const weatherMainDataEl = document.querySelector(".app");
   weatherMainDataEl.innerHTML = "";
@@ -84,26 +83,29 @@ async function renderData() {
         </div>
         <div class="hourly-forecast general-container">
         <div class="hourly-forecast__heading">
-          Heute ${currentWatherData.current.condition.text}. Wind bis zu ${Math.floor(currentWatherData.current.wind_kph)} km/h.
+          Heute ${forecastWatherData.forecast.forecastday[0].day.condition.text}. Wind bis zu ${Math.floor(currentWatherData.current.wind_kph)} km/h.
         </div>
         <div class="hourly-forecast__details">
           <div class="hour-block">
             <div class="hour-block__hour">jetzt</div>
-            <div class="hour-block__icon">blabla</div>
-            <div class="hour-block__temperature">17°</div>
+            <img class="hour-block__icon" src="https://${getHourlyIcon(0, hour)}" alt="Weather icon">
+            <div class="hour-block__temperature">${getHourlyTemperature(0, hour)}°</div>
           </div> 
         </div>
       </div>
       </div>`;
 
   // start rendering of hourlyForecastDetails
-  function getHourTemperature(time) {
-    return forecastWatherData.forecast.forecastday[0].hour[time].temp_c;
+  function getHourlyTemperature(day, hour) {
+    return forecastWatherData.forecast.forecastday[day].hour[hour].temp_c;
   }
 
-  function getHourIcon(time) {
-    return forecastWatherData.forecast.forecastday[0].hour[time].condition.icon;
+  function getHourlyIcon(day, hour) {
+    return forecastWatherData.forecast.forecastday[day].hour[hour].condition
+      .icon;
   }
+
+  // getHourlyTemperature(, 1);
 
   let hourlyForecastDetailsEl = document.querySelector(
     ".hourly-forecast__details",
@@ -114,8 +116,8 @@ async function renderData() {
   while (i <= 22) {
     hourlyForecastDetailsEl.innerHTML += `<div class="hour-block">
             <div class="hour-block__hour">${i + 1} Uhr</div>
-            <div class="hour-block__icon">blabla</div>
-            <div class="hour-block__temperature">17°</div>
+             <img class="hour-block__icon" src="https://${getHourlyIcon(0, i)}" alt="Weather icon">
+            <div class="hour-block__temperature">${getHourlyTemperature(0, i)}°</div>
           </div>`;
     i++;
   }
@@ -131,8 +133,8 @@ async function renderData() {
     }
     hourlyForecastDetailsEl.innerHTML += `<div class="hour-block">
             <div class="hour-block__hour">${zero}${i} Uhr</div>
-            <img class="hour-block__icon" src="https://${getHourIcon(i)}" alt="Weather icon">
-            <div class="hour-block__temperature">${getHourTemperature(i)}°</div>
+            <img class="hour-block__icon" src="https://${getHourlyIcon(1, i)}" alt="Weather icon">
+            <div class="hour-block__temperature">${getHourlyTemperature(1, i)}°</div>
           </div>`;
     i++;
   }

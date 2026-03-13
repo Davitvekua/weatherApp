@@ -19,7 +19,7 @@ export async function getCurrentWeather(location, language) {
 }
 
 const forecastWeatherApi =
-  "https://api.weatherapi.com/v1/forecast.json?key=809d5f390de3480fa3e125039260903&q=Ansbach&lang=de";
+  "https://api.weatherapi.com/v1/forecast.json?key=809d5f390de3480fa3e125039260903&q=Ansbach&lang=de&days=2";
 
 export async function getWeatherForecast(location, language) {
   let request = await fetch(
@@ -29,7 +29,8 @@ export async function getWeatherForecast(location, language) {
       `&q=` +
       location +
       `&lang=` +
-      language,
+      language +
+      `&days=2`,
   );
   let response = await request.json();
   return response;
