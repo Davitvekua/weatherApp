@@ -1,7 +1,7 @@
 import { getCurrentWeather, getWeatherForecast } from "./fetch";
 import "./main.scss";
 
-const currentLocation = "Ansbach";
+const currentLocation = "Berlin";
 const language = "de";
 
 function renderLoadScreen() {
@@ -25,6 +25,12 @@ async function renderData() {
 
   let currentTime = currentWatherData.location.localtime;
   let hour = Number(currentTime.split(" ")[1].split(":")[0]);
+  console.log(currentTime);
+
+  let dateString = currentTime.replace(" ", "T");
+  let currentDate = new Date(dateString);
+  let currentDayNumber = currentDate.getDay();
+  let weekdays = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So", "Mo", "Di"];
 
   const weatherMainDataEl = document.querySelector(".app");
   weatherMainDataEl.innerHTML = "";
@@ -92,10 +98,25 @@ async function renderData() {
             <div class="hour-block__temperature">${getHourlyTemperature(0, hour)}°</div>
           </div> 
         </div>
+      </div><div class="daily-forecast general-container">
+        <div class="daily-forecast__heading">
+          Vorhersage für die nächsten 3 Tage:
+        </div>
+        <div class="daily-forecast__day-one">
+          <span>Heute</span> <img src="https://${forecastWatherData.forecast.forecastday[0].day.condition.icon}" alt="Weather icon"> <span>H:${Math.floor(forecastWatherData.forecast.forecastday[0].day.maxtemp_c)}° T:${Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c)} Wind: ${Math.floor(forecastWatherData.forecast.forecastday[1].day.maxtemp_c)} km/h</span>
+        </div>
+        <div class="daily-forecast__day-two">
+          <span class="daily__day">${weekdays[currentDayNumber + 1]}</span> <img src="https://${forecastWatherData.forecast.forecastday[1].day.condition.icon}" alt="Weather icon"> <span>H:${Math.floor(forecastWatherData.forecast.forecastday[1].day.maxtemp_c)}° T:${Math.floor(forecastWatherData.forecast.forecastday[1].day.mintemp_c)} Wind: ${Math.floor(forecastWatherData.forecast.forecastday[1].day.maxtemp_c)} km/h</span>
+        </div>
+        <div class="daily-forecast__day-three">
+          <span class="daily__day">${weekdays[currentDayNumber + 2]}</span> <img src="https://${forecastWatherData.forecast.forecastday[2].day.condition.icon}" alt="Weather icon"> <span>H:${Math.floor(forecastWatherData.forecast.forecastday[2].day.maxtemp_c)}° T:${Math.floor(forecastWatherData.forecast.forecastday[2].day.mintemp_c)} Wind: ${Math.floor(forecastWatherData.forecast.forecastday[2].day.maxtemp_c)} km/h</span>
+        </div>
       </div>
-      </div>`;
+      </div>
+      `;
 
   // start rendering of hourlyForecastDetails
+
   function getHourlyTemperature(day, hour) {
     return forecastWatherData.forecast.forecastday[day].hour[hour].temp_c;
   }
@@ -138,7 +159,6 @@ async function renderData() {
           </div>`;
     i++;
   }
-  // finish rendering of hourlyForecastDetails
 }
 
 async function init() {

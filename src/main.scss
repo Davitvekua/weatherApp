@@ -1,7 +1,7 @@
 @use "mixins";
 @use "variable";
 @use "loading";
-@use "hourlyForecast";
+@use "hourly-daily-Forecast";
 
 * {
   margin: 0;
@@ -20,7 +20,6 @@ body {
   background-color: rgb(72, 67, 67);
   display: flex;
   justify-content: center;
-  height: 100vh;
   // @include largeScreen {
   //   // Falls für großen bildschirm (über 700px) etwas gewünscht wird
   // }
