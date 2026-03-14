@@ -1,7 +1,7 @@
 import { getCurrentWeather, getWeatherForecast } from "./fetch";
 import "./main.scss";
 
-const currentLocation = "Berlin";
+const currentLocation = "Ansbach";
 const language = "de";
 
 function renderLoadScreen() {
@@ -113,23 +113,17 @@ async function renderData() {
         </div>
       </div>
       <div class="container-box">
-        <div class="container-box__mini general-container"><p>Feuchtigkeit</p>
-          <h1></h1>
+        <div class="container-box__mini general-container"><p>Feuchtigkeit</p><h1>${forecastWatherData.current.humidity}%</h1>
         </div>
-        <div class="container-box__mini general-container"><p>Gefühlt</p>
-          <h1></h1>
+        <div class="container-box__mini general-container"><p>Gefühlt</p><h1>${forecastWatherData.current.feelslike_c}°</h1>
         </div>
-        <div class="container-box__mini general-container"><p>Sonnenaufgang</p>
-          <h1></h1>
+        <div class="container-box__mini general-container"><p>Sonnenaufgang</p><h1>${forecastWatherData.forecast.forecastday[0].astro.sunrise.split(" ")[0]} Uhr</h1>
         </div>
-        <div class="container-box__mini general-container"><p>Sonnenuntergang</p>
-          <h1></h1>
+        <div class="container-box__mini general-container"><p>Sonnenuntergang</p><h1>${Number(forecastWatherData.forecast.forecastday[0].astro.sunset.split(" ")[0].split(":")[0]) + 12}:${forecastWatherData.forecast.forecastday[0].astro.sunset.split(" ")[0].split(":")[1]} Uhr</h1>
         </div>
-        <div class="container-box__mini general-container"><p>Niederschlag</p>
-          <h1></h1>
+        <div class="container-box__mini general-container"><p>Niederschlag</p><h1>${forecastWatherData.current.precip_mm}mm</h1>
         </div>
-        <div class="container-box__mini general-container"><p>UV-Index</p>
-          <h1></h1>
+        <div class="container-box__mini general-container"><p>UV-Index</p><h1>${forecastWatherData.current.uv}</h1>
         </div>
       </div>
       </div>
