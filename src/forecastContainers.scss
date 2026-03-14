@@ -80,3 +80,19 @@
 .daily__day {
   padding-right: 1.6rem;
 }
+
+.container-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding: 0 0.8rem 0.8rem 0;
+
+  &__mini {
+    padding: 1.5rem 0 2rem 0;
+    margin: 0.8rem 0.8rem 0 0.8rem;
+    width: calc(100% - 0.8rem);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+}

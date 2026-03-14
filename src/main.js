@@ -112,6 +112,26 @@ async function renderData() {
           <span class="daily__day">${weekdays[currentDayNumber + 2]}</span> <img src="https://${forecastWatherData.forecast.forecastday[2].day.condition.icon}" alt="Weather icon"> <span>H:${Math.floor(forecastWatherData.forecast.forecastday[2].day.maxtemp_c)}° T:${Math.floor(forecastWatherData.forecast.forecastday[2].day.mintemp_c)} Wind: ${Math.floor(forecastWatherData.forecast.forecastday[2].day.maxtemp_c)} km/h</span>
         </div>
       </div>
+      <div class="container-box">
+        <div class="container-box__mini general-container"><p>Feuchtigkeit</p>
+          <h1></h1>
+        </div>
+        <div class="container-box__mini general-container"><p>Gefühlt</p>
+          <h1></h1>
+        </div>
+        <div class="container-box__mini general-container"><p>Sonnenaufgang</p>
+          <h1></h1>
+        </div>
+        <div class="container-box__mini general-container"><p>Sonnenuntergang</p>
+          <h1></h1>
+        </div>
+        <div class="container-box__mini general-container"><p>Niederschlag</p>
+          <h1></h1>
+        </div>
+        <div class="container-box__mini general-container"><p>UV-Index</p>
+          <h1></h1>
+        </div>
+      </div>
       </div>
       `;
 

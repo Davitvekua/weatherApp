@@ -1,7 +1,7 @@
 @use "mixins";
 @use "variable";
 @use "loading";
-@use "hourly-daily-Forecast";
+@use "forecastContainers";
 
 * {
   margin: 0;
@@ -31,7 +31,7 @@ body {
 }
 
 .loading {
-  height: 80%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 1rem;
