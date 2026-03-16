@@ -5,6 +5,38 @@ import "./main.scss";
 const currentLocation = "Ansbach";
 const language = "de";
 
+async function renderStartScreen() {
+  const startScreenEl = document.querySelector(".app");
+  startScreenEl.innerHTML = "";
+  startScreenEl.innerHTML = `<div class="start-screen">
+        <div class="top-menu">
+          <div class="top-menu__heading">Wetter</div>
+          <button class="top-menu__edit">Bearbeiten</button>
+        </div>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Nach Stadt suchen..."
+        />
+      </div>`;
+  let favoriteCityEl = document.querySelector(".start-screen");
+
+  function addFavoriteCity() {
+    favoriteCityEl.innerHTML += `<div class="favorite-city">
+          <div class="favorite-city__name">
+            <div class="favorite-city__name__city">Ansbach</div>
+            <div class="favorite-city__name__country">Germany</div>
+          </div>
+          <div class="favorite-city__temperature">3°</div>
+          <div class="favorite-city__condition">Leicht bewolkt</div>
+          <div class="favorite-city__peak-temberatures">H:6° T:0°</div>
+        </div>`;
+  }
+  addFavoriteCity();
+  addFavoriteCity();
+  addFavoriteCity();
+}
+
 function renderLoadScreen() {
   const appScreen = document.querySelector(".app");
   appScreen.innerHTML = "";
@@ -177,8 +209,9 @@ async function renderData() {
 }
 
 async function init() {
-  renderLoadScreen();
-  await renderData();
+  renderStartScreen();
+  // renderLoadScreen();
+  // await renderData();
 }
 
 init();
