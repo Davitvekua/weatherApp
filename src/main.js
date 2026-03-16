@@ -1,4 +1,5 @@
 import { getCurrentWeather, getWeatherForecast } from "./fetch";
+import { getConditionImagePath } from "./conditions";
 import "./main.scss";
 
 const currentLocation = "Ansbach";
@@ -34,7 +35,7 @@ async function renderData() {
 
   const weatherMainDataEl = document.querySelector(".app");
   weatherMainDataEl.innerHTML = "";
-  weatherMainDataEl.innerHTML = `<div class="main-display">
+  weatherMainDataEl.innerHTML = `<div class="main-display" style="background-image: linear-gradient(0deg, #0003, #0003), url('${getConditionImagePath(currentWatherData.current.condition.code, currentWatherData.current.is_day)}')">
         <div class="top-buttons">
           <button class="top-buttons__back">
             <svg
@@ -43,7 +44,7 @@ async function renderData() {
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-6"
+              class="size-6 bottomIcons"
             >
               <path
                 stroke-linecap="round"
@@ -58,7 +59,7 @@ async function renderData() {
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-6"
+              class="size-6 bottomIcons"
             >
               <path
                 stroke-linecap="round"
