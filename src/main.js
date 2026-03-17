@@ -4,8 +4,11 @@ import "./main.scss";
 
 const currentLocation = "Ansbach";
 const language = "de";
+let favoriteCitiesArray = [];
 
-async function renderStartScreen() {
+// Start Screen bauen
+
+function renderStartScreen() {
   const startScreenEl = document.querySelector(".app");
   startScreenEl.innerHTML = "";
   startScreenEl.innerHTML = `<div class="start-screen">
@@ -18,24 +21,65 @@ async function renderStartScreen() {
           type="text"
           placeholder="Nach Stadt suchen..."
         />
+        <div class="start-screen__favorite-cities"></div>
       </div>`;
-  let favoriteCityEl = document.querySelector(".start-screen");
-
-  function addFavoriteCity() {
-    favoriteCityEl.innerHTML += `<div class="favorite-city">
-          <div class="favorite-city__name">
-            <div class="favorite-city__name__city">Ansbach</div>
-            <div class="favorite-city__name__country">Germany</div>
-          </div>
-          <div class="favorite-city__temperature">3°</div>
-          <div class="favorite-city__condition">Leicht bewolkt</div>
-          <div class="favorite-city__peak-temberatures">H:6° T:0°</div>
-        </div>`;
-  }
-  addFavoriteCity();
-  addFavoriteCity();
-  addFavoriteCity();
 }
+
+async function saveFavoriteCity() {
+  let desiredCity = document.querySelector(".search-input").value;
+  let FavoriteCity = {
+    specialName: 1,
+    cityName: desiredCity,
+  };
+  favoriteCitiesArray.push(FavoriteCity);
+  console.log(favoriteCitiesArray);
+  await renderFavoriteCites();
+}
+
+function createFavoriteCity(
+  backgroundImage,
+  dayNightIndicator,
+  city,
+  country,
+  currentTemberature,
+  condition,
+  temberatureMax,
+  temberatureMin,
+) {
+  let favoriteCityEl = document.querySelector(".start-screen__favorite-cities");
+  favoriteCityEl.innerHTML += `<div class="favorite-city" style="background-image: linear-gradient(0deg, #0002, #0002), url('${getConditionImagePath(backgroundImage, dayNightIndicator)}')">
+          <div class="favorite-city__name">
+            <div class="favorite-city__name__city">${city}</div>
+            <div class="favorite-city__name__country">${country}</div>
+          </div>
+          <div class="favorite-city__temperature">${currentTemberature}°</div>
+          <div class="favorite-city__condition">${condition}</div>
+          <div class="favorite-city__peak-temberatures">H:${temberatureMax}° T:${temberatureMin}°</div>
+        </div>`;
+}
+
+async function renderFavoriteCites() {
+  let favoriteCityEl = document.querySelector(".start-screen__favorite-cities");
+  favoriteCityEl.innerHTML = "";
+  favoriteCitiesArray.forEach(async (el) => {
+    let currentWatherData = await getCurrentWeather(el.cityName, language);
+    let forecastWatherData = await getWeatherForecast(el.cityName, language);
+    createFavoriteCity(
+      currentWatherData.current.condition.code,
+      currentWatherData.current.is_day,
+      currentWatherData.location.name,
+      currentWatherData.location.country,
+      Math.floor(currentWatherData.current.temp_c),
+      currentWatherData.current.condition.text,
+      Math.floor(forecastWatherData.forecast.forecastday[0].day.maxtemp_c),
+      Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c),
+    );
+  });
+
+  console.log(favoriteCitiesArray[length - 1].cityName);
+}
+
+// Ende von Start Screen
 
 function renderLoadScreen() {
   const appScreen = document.querySelector(".app");
@@ -209,9 +253,24 @@ async function renderData() {
 }
 
 async function init() {
-  renderStartScreen();
+  await renderStartScreen();
+
+  // renderFavoriteCity(
+  //   backgroundImage,
+  //   dayNightIndicator,
+  //   city,
+  //   country,
+  //   currentTemberature,
+  //   condition,
+  //   temberatureMax,
+  //   temberatureMin,
+  // );
   // renderLoadScreen();
   // await renderData();
 }
 
 init();
+
+document
+  .querySelector(".top-menu__edit")
+  .addEventListener("click", saveFavoriteCity);

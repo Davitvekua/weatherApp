@@ -33,6 +33,5 @@ export async function getWeatherForecast(location, language) {
       `&days=3`,
   );
   let response = await request.json();
-  console.log(response);
   return response;
 }

@@ -4,6 +4,12 @@
   gap: 0.5rem;
   padding: 1rem;
   min-height: 100vh;
+
+  &__favorite-cities {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
 
 .top-menu {
@@ -30,7 +36,7 @@
   font-size: 1.1rem;
   font-family: "Inter", sans-serif;
   border-radius: 7px;
-  margin: 0.5rem 0 0.5rem 0;
+  margin: 0.5rem 0 1rem 0;
 }
 
 .favorite-city {
@@ -38,9 +44,10 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   width: 100%;
-  background-color: blueviolet;
   padding: 1rem;
   border-radius: 7px;
+  background-size: cover;
+  background-position-y: 7%;
 
   &__name__city {
     font-size: 1.5rem;
