@@ -9,9 +9,9 @@ let favoriteCitiesArray = [];
 // Start Screen bauen
 
 function renderStartScreen() {
-  const startScreenEl = document.querySelector(".app");
-  startScreenEl.innerHTML = "";
-  startScreenEl.innerHTML = `<div class="start-screen">
+  const mainScreenEl = document.querySelector(".app");
+  mainScreenEl.innerHTML = "";
+  mainScreenEl.innerHTML = `<div class="start-screen">
         <div class="top-menu">
           <div class="top-menu__heading">Wetter</div>
           <button class="top-menu__edit">Bearbeiten</button>
@@ -34,6 +34,7 @@ async function saveFavoriteCity() {
   favoriteCitiesArray.push(FavoriteCity);
   console.log(favoriteCitiesArray);
   await renderFavoriteCites();
+  document.querySelector(".search-input").value = "";
 }
 
 function createFavoriteCity(
@@ -47,7 +48,7 @@ function createFavoriteCity(
   temberatureMin,
 ) {
   let favoriteCityEl = document.querySelector(".start-screen__favorite-cities");
-  favoriteCityEl.innerHTML += `<div class="favorite-city" style="background-image: linear-gradient(0deg, #0002, #0002), url('${getConditionImagePath(backgroundImage, dayNightIndicator)}')">
+  favoriteCityEl.innerHTML += `<div class="favorite-city" data-city="${city}" style="background-image: linear-gradient(0deg, #0002, #0002), url('${getConditionImagePath(backgroundImage, dayNightIndicator)}')">
           <div class="favorite-city__name">
             <div class="favorite-city__name__city">${city}</div>
             <div class="favorite-city__name__country">${country}</div>
@@ -75,17 +76,15 @@ async function renderFavoriteCites() {
       Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c),
     );
   });
-
-  console.log(favoriteCitiesArray[length - 1].cityName);
 }
 
 // Ende von Start Screen
 
-function renderLoadScreen() {
-  const appScreen = document.querySelector(".app");
-  appScreen.innerHTML = "";
-  appScreen.innerHTML = `<div class="loading">
-        <div class="loading__message">Daten für ${currentLocation} werden geladen</div>
+function renderLoadScreen(city) {
+  const mainScreenEl = document.querySelector(".app");
+  mainScreenEl.innerHTML = "";
+  mainScreenEl.innerHTML = `<div class="loading">
+        <div class="loading__message">Daten für ${city} werden geladen</div>
         <div class="lds-ring">
         <div></div>
         <div></div>
@@ -96,22 +95,21 @@ function renderLoadScreen() {
       `;
 }
 
-async function renderData() {
-  let currentWatherData = await getCurrentWeather(currentLocation, language);
-  let forecastWatherData = await getWeatherForecast(currentLocation, language);
+async function renderWeatherData(cityName) {
+  let currentWatherData = await getCurrentWeather(cityName, language);
+  let forecastWatherData = await getWeatherForecast(cityName, language);
 
   let currentTime = currentWatherData.location.localtime;
   let hour = Number(currentTime.split(" ")[1].split(":")[0]);
-  console.log(currentTime);
 
   let dateString = currentTime.replace(" ", "T");
   let currentDate = new Date(dateString);
   let currentDayNumber = currentDate.getDay();
   let weekdays = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So", "Mo", "Di"];
 
-  const weatherMainDataEl = document.querySelector(".app");
-  weatherMainDataEl.innerHTML = "";
-  weatherMainDataEl.innerHTML = `<div class="main-display" style="background-image: linear-gradient(0deg, #0003, #0003), url('${getConditionImagePath(currentWatherData.current.condition.code, currentWatherData.current.is_day)}')">
+  const mainScreenEl = document.querySelector(".app");
+  mainScreenEl.innerHTML = "";
+  mainScreenEl.innerHTML = `<div class="main-display" style="background-image: linear-gradient(0deg, #0003, #0003), url('${getConditionImagePath(currentWatherData.current.condition.code, currentWatherData.current.is_day)}')">
         <div class="top-buttons">
           <button class="top-buttons__back">
             <svg
@@ -254,23 +252,32 @@ async function renderData() {
 
 async function init() {
   await renderStartScreen();
-
-  // renderFavoriteCity(
-  //   backgroundImage,
-  //   dayNightIndicator,
-  //   city,
-  //   country,
-  //   currentTemberature,
-  //   condition,
-  //   temberatureMax,
-  //   temberatureMin,
-  // );
-  // renderLoadScreen();
-  // await renderData();
 }
 
 init();
 
-document
-  .querySelector(".top-menu__edit")
-  .addEventListener("click", saveFavoriteCity);
+async function saveFavoriteCityEvent(event) {
+  const el = event.target.closest(".top-menu__edit");
+  if (!el) return;
+  await saveFavoriteCity();
+}
+document.addEventListener("click", saveFavoriteCityEvent);
+
+async function renderClickedCity(event) {
+  const el = event.target.closest(".favorite-city");
+  if (!el) return;
+  const city = el.dataset.city;
+  await renderLoadScreen(city);
+  await renderWeatherData(city);
+}
+document.addEventListener("click", renderClickedCity);
+
+function renderStartScreenBack(event) {
+  const backButton = event.target.closest(".top-buttons__back");
+  if (!backButton) {
+    return;
+  }
+  renderStartScreen();
+  saveFavoriteCity();
+}
+document.addEventListener("click", renderStartScreenBack);
