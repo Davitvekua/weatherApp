@@ -2,7 +2,6 @@ import { getCurrentWeather, getWeatherForecast } from "./fetch";
 import { getConditionImagePath } from "./conditions";
 import "./main.scss";
 
-const currentLocation = "Ansbach";
 const language = "de";
 let favoriteCitiesArray = [];
 
@@ -23,18 +22,6 @@ function renderStartScreen() {
         />
         <div class="start-screen__favorite-cities"></div>
       </div>`;
-}
-
-async function saveFavoriteCity() {
-  let desiredCity = document.querySelector(".search-input").value;
-  let FavoriteCity = {
-    specialName: 1,
-    cityName: desiredCity,
-  };
-  favoriteCitiesArray.push(FavoriteCity);
-  console.log(favoriteCitiesArray);
-  await renderFavoriteCites();
-  document.querySelector(".search-input").value = "";
 }
 
 function createFavoriteCity(
@@ -256,13 +243,7 @@ async function init() {
 
 init();
 
-async function saveFavoriteCityEvent(event) {
-  const el = event.target.closest(".top-menu__edit");
-  if (!el) return;
-  await saveFavoriteCity();
-}
-document.addEventListener("click", saveFavoriteCityEvent);
-
+// 1
 async function renderClickedCity(event) {
   const el = event.target.closest(".favorite-city");
   if (!el) return;
@@ -272,12 +253,49 @@ async function renderClickedCity(event) {
 }
 document.addEventListener("click", renderClickedCity);
 
+// 2
+async function rendertypedCity(event) {
+  const el = event.target.closest(".search-input");
+  if (!el) return;
+  const city = el.value;
+  await renderLoadScreen(city);
+  await renderWeatherData(city);
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    rendertypedCity(event);
+  }
+});
+
+// 3
 function renderStartScreenBack(event) {
   const backButton = event.target.closest(".top-buttons__back");
   if (!backButton) {
     return;
   }
   renderStartScreen();
-  saveFavoriteCity();
+  renderFavoriteCites();
+  document.querySelector(".search-input").value = "";
 }
 document.addEventListener("click", renderStartScreenBack);
+
+// 4
+
+async function saveFavoriteCityEventTwo(event) {
+  const el = event.target.closest(".top-buttons__favorite");
+  if (!el) return;
+  console.log("Hallo");
+
+  let desiredCity = document.querySelector(
+    ".weather-main-data__city-name",
+  ).innerText;
+  console.log(desiredCity);
+  let FavoriteCity = {
+    specialName: 1,
+    cityName: desiredCity,
+  };
+  favoriteCitiesArray.push(FavoriteCity);
+  console.log(favoriteCitiesArray);
+}
+document.addEventListener("click", saveFavoriteCityEventTwo);
