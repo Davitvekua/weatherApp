@@ -22,6 +22,35 @@ function renderStartScreen() {
         />
         <div class="start-screen__favorite-cities"></div>
       </div>`;
+
+  document
+    .querySelector(".search-input")
+    .addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        rendertypedCity(event);
+      }
+    });
+}
+
+async function saveFavoriteCity() {
+  let desiredCity = document.querySelector(
+    ".weather-main-data__city-name",
+  ).innerText;
+
+  if (favoriteCitiesArray.some((city) => city.cityName === desiredCity)) return;
+
+  let FavoriteCity = {
+    specialName: 1,
+    cityName: desiredCity,
+  };
+
+  favoriteCitiesArray.push(FavoriteCity);
+
+  localStorage.setItem("favoriteCities", JSON.stringify(favoriteCitiesArray));
+
+  document
+    .querySelector(".favorite-button")
+    .classList.add("favorite-button-filled");
 }
 
 function createFavoriteCity(
@@ -35,20 +64,42 @@ function createFavoriteCity(
   temberatureMin,
 ) {
   let favoriteCityEl = document.querySelector(".start-screen__favorite-cities");
-  favoriteCityEl.innerHTML += `<div class="favorite-city" data-city="${city}" style="background-image: linear-gradient(0deg, #0002, #0002), url('${getConditionImagePath(backgroundImage, dayNightIndicator)}')">
-          <div class="favorite-city__name">
+  favoriteCityEl.innerHTML += `<div class="favorite-city-container">
+        <span class="favorite-city-container__delete-button"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6 delete-icon"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+        </span>
+        <span class="favorite-city" data-city="${city}" style="background-image: linear-gradient(0deg, #0002, #0002), url('${getConditionImagePath(backgroundImage, dayNightIndicator)}')"
+          ><div class="favorite-city__name">
             <div class="favorite-city__name__city">${city}</div>
             <div class="favorite-city__name__country">${country}</div>
           </div>
           <div class="favorite-city__temperature">${currentTemberature}°</div>
           <div class="favorite-city__condition">${condition}</div>
-          <div class="favorite-city__peak-temberatures">H:${temberatureMax}° T:${temberatureMin}°</div>
-        </div>`;
+          <div class="favorite-city__peak-temberatures">H:${temberatureMax}° T:${temberatureMin}°</div></span
+        >
+      </div>`;
 }
 
 async function renderFavoriteCites() {
   let favoriteCityEl = document.querySelector(".start-screen__favorite-cities");
   favoriteCityEl.innerHTML = "";
+
+  favoriteCitiesArray =
+    JSON.parse(localStorage.getItem("favoriteCities")) || [];
+
   favoriteCitiesArray.forEach(async (el) => {
     let currentWatherData = await getCurrentWeather(el.cityName, language);
     let forecastWatherData = await getWeatherForecast(el.cityName, language);
@@ -63,6 +114,16 @@ async function renderFavoriteCites() {
       Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c),
     );
   });
+
+  // funktioniert nicht, warum??????????????
+
+  // document.querySelectorAll(".favorite-city").forEach((el) => {
+  //   el.addEventListener("click", async (event) => {
+  //     let city = event.target.closest(".favorite-city").dataset.city;
+  //     await renderLoadScreen(city);
+  //     await renderWeatherData(city);
+  //   });
+  // });
 }
 
 // Ende von Start Screen
@@ -120,7 +181,7 @@ async function renderWeatherData(cityName) {
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="size-6 bottomIcons"
+              class="size-6 bottomIcons favorite-button"
             >
               <path
                 stroke-linecap="round"
@@ -235,15 +296,48 @@ async function renderWeatherData(cityName) {
           </div>`;
     i++;
   }
+  document
+    .querySelector(".favorite-button")
+    .addEventListener("click", saveFavoriteCity);
+
+  document
+    .querySelector(".top-buttons__back")
+    .addEventListener("click", renderStartScreenBack);
+
+  let typedCityName = cityName;
+
+  if (favoriteCitiesArray.some((city) => city.cityName === typedCityName)) {
+    document
+      .querySelector(".favorite-button")
+      .classList.add("favorite-button-filled");
+  }
+}
+
+console.log(favoriteCitiesArray);
+
+function renderStartScreenBack() {
+  renderStartScreen();
+  renderFavoriteCites();
+  document.querySelector(".search-input").value = "";
+}
+
+async function rendertypedCity() {
+  const inputDesiredCity = document.querySelector(".search-input");
+  if (!inputDesiredCity) return;
+  const city = inputDesiredCity.value;
+  await renderLoadScreen(city);
+  await renderWeatherData(city);
 }
 
 async function init() {
   await renderStartScreen();
+  await renderFavoriteCites();
 }
 
 init();
 
 // 1
+
 async function renderClickedCity(event) {
   const el = event.target.closest(".favorite-city");
   if (!el) return;
@@ -252,50 +346,3 @@ async function renderClickedCity(event) {
   await renderWeatherData(city);
 }
 document.addEventListener("click", renderClickedCity);
-
-// 2
-async function rendertypedCity(event) {
-  const el = event.target.closest(".search-input");
-  if (!el) return;
-  const city = el.value;
-  await renderLoadScreen(city);
-  await renderWeatherData(city);
-}
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    rendertypedCity(event);
-  }
-});
-
-// 3
-function renderStartScreenBack(event) {
-  const backButton = event.target.closest(".top-buttons__back");
-  if (!backButton) {
-    return;
-  }
-  renderStartScreen();
-  renderFavoriteCites();
-  document.querySelector(".search-input").value = "";
-}
-document.addEventListener("click", renderStartScreenBack);
-
-// 4
-
-async function saveFavoriteCityEventTwo(event) {
-  const el = event.target.closest(".top-buttons__favorite");
-  if (!el) return;
-  console.log("Hallo");
-
-  let desiredCity = document.querySelector(
-    ".weather-main-data__city-name",
-  ).innerText;
-  console.log(desiredCity);
-  let FavoriteCity = {
-    specialName: 1,
-    cityName: desiredCity,
-  };
-  favoriteCitiesArray.push(FavoriteCity);
-  console.log(favoriteCitiesArray);
-}
-document.addEventListener("click", saveFavoriteCityEventTwo);
