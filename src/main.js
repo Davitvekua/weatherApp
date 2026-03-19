@@ -13,7 +13,7 @@ function renderStartScreen() {
   mainScreenEl.innerHTML = `<div class="start-screen">
         <div class="top-menu">
           <div class="top-menu__heading">Wetter</div>
-          <button class="top-menu__edit">Bearbeiten</button>
+          <button class="top-menu__edit">bearbeiten</button>
         </div>
         <input
           class="search-input"
@@ -30,6 +30,33 @@ function renderStartScreen() {
         rendertypedCity(event);
       }
     });
+
+  document.querySelector(".top-menu__edit").addEventListener("click", () => {
+    document
+      .querySelectorAll(".favorite-city-container__delete-button")
+      .forEach((el) => el.classList.toggle("delete-button-none"));
+
+    if (
+      document.querySelector(".top-menu__edit").textContent === "bearbeiten"
+    ) {
+      document.querySelector(".top-menu__edit").textContent = "Fertig";
+
+      document
+        .querySelectorAll(".favorite-city-container__delete-button")
+        .forEach((el) => {
+          el.addEventListener("click", (event) => {
+            let currentContainer = event.target.closest(
+              ".favorite-city-container__delete-button",
+            ).dataset.city;
+            console.log(currentContainer);
+          });
+        });
+    } else if (
+      document.querySelector(".top-menu__edit").textContent === "Fertig"
+    ) {
+      document.querySelector(".top-menu__edit").textContent = "bearbeiten";
+    }
+  });
 }
 
 async function saveFavoriteCity() {
@@ -65,7 +92,7 @@ function createFavoriteCity(
 ) {
   let favoriteCityEl = document.querySelector(".start-screen__favorite-cities");
   favoriteCityEl.innerHTML += `<div class="favorite-city-container">
-        <span class="favorite-city-container__delete-button"
+        <button class="favorite-city-container__delete-button delete-button-none" data-city="${city}"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -80,7 +107,7 @@ function createFavoriteCity(
               d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
             />
           </svg>
-        </span>
+        </button>
         <span class="favorite-city" data-city="${city}" style="background-image: linear-gradient(0deg, #0002, #0002), url('${getConditionImagePath(backgroundImage, dayNightIndicator)}')"
           ><div class="favorite-city__name">
             <div class="favorite-city__name__city">${city}</div>
@@ -100,7 +127,23 @@ async function renderFavoriteCites() {
   favoriteCitiesArray =
     JSON.parse(localStorage.getItem("favoriteCities")) || [];
 
-  favoriteCitiesArray.forEach(async (el) => {
+  // es rendert schneller aber ohne reihenfolge
+  // favoriteCitiesArray.forEach(async (el) => {
+  //   let currentWatherData = await getCurrentWeather(el.cityName, language);
+  //   let forecastWatherData = await getWeatherForecast(el.cityName, language);
+  //   createFavoriteCity(
+  //     currentWatherData.current.condition.code,
+  //     currentWatherData.current.is_day,
+  //     currentWatherData.location.name,
+  //     currentWatherData.location.country,
+  //     Math.floor(currentWatherData.current.temp_c),
+  //     currentWatherData.current.condition.text,
+  //     Math.floor(forecastWatherData.forecast.forecastday[0].day.maxtemp_c),
+  //     Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c),
+  //   );
+  // });
+
+  for (let el of favoriteCitiesArray) {
     let currentWatherData = await getCurrentWeather(el.cityName, language);
     let forecastWatherData = await getWeatherForecast(el.cityName, language);
     createFavoriteCity(
@@ -113,7 +156,7 @@ async function renderFavoriteCites() {
       Math.floor(forecastWatherData.forecast.forecastday[0].day.maxtemp_c),
       Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c),
     );
-  });
+  }
 
   // funktioniert nicht, warum??????????????
 
@@ -312,8 +355,6 @@ async function renderWeatherData(cityName) {
       .classList.add("favorite-button-filled");
   }
 }
-
-console.log(favoriteCitiesArray);
 
 function renderStartScreenBack() {
   renderStartScreen();

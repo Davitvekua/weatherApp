@@ -49,9 +49,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20%;
-    display: none;
+    width: 17%;
+    background-color: transparent;
+    border: none;
   }
+}
+
+.delete-button-none {
+  display: none;
 }
 
 .favorite-city {
