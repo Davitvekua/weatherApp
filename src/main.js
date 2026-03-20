@@ -45,10 +45,23 @@ function renderStartScreen() {
         .querySelectorAll(".favorite-city-container__delete-button")
         .forEach((el) => {
           el.addEventListener("click", (event) => {
-            let currentContainer = event.target.closest(
+            let currentContainerCity = event.target.closest(
               ".favorite-city-container__delete-button",
             ).dataset.city;
-            console.log(currentContainer);
+
+            console.log(currentContainerCity);
+            console.log(favoriteCitiesArray);
+
+            favoriteCitiesArray = favoriteCitiesArray.filter(
+              (el) => el.cityName !== currentContainerCity,
+            );
+
+            localStorage.setItem(
+              "favoriteCities",
+              JSON.stringify(favoriteCitiesArray),
+            );
+
+            el.parentElement.remove();
           });
         });
     } else if (
