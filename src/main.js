@@ -49,9 +49,6 @@ function renderStartScreen() {
               ".favorite-city-container__delete-button",
             ).dataset.city;
 
-            console.log(currentContainerCity);
-            console.log(favoriteCitiesArray);
-
             favoriteCitiesArray = favoriteCitiesArray.filter(
               (el) => el.cityName !== currentContainerCity,
             );
@@ -140,22 +137,6 @@ async function renderFavoriteCites() {
   favoriteCitiesArray =
     JSON.parse(localStorage.getItem("favoriteCities")) || [];
 
-  // es rendert schneller aber ohne reihenfolge
-  // favoriteCitiesArray.forEach(async (el) => {
-  //   let currentWatherData = await getCurrentWeather(el.cityName, language);
-  //   let forecastWatherData = await getWeatherForecast(el.cityName, language);
-  //   createFavoriteCity(
-  //     currentWatherData.current.condition.code,
-  //     currentWatherData.current.is_day,
-  //     currentWatherData.location.name,
-  //     currentWatherData.location.country,
-  //     Math.floor(currentWatherData.current.temp_c),
-  //     currentWatherData.current.condition.text,
-  //     Math.floor(forecastWatherData.forecast.forecastday[0].day.maxtemp_c),
-  //     Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c),
-  //   );
-  // });
-
   for (let el of favoriteCitiesArray) {
     let currentWatherData = await getCurrentWeather(el.cityName, language);
     let forecastWatherData = await getWeatherForecast(el.cityName, language);
@@ -170,16 +151,6 @@ async function renderFavoriteCites() {
       Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c),
     );
   }
-
-  // funktioniert nicht, warum??????????????
-
-  // document.querySelectorAll(".favorite-city").forEach((el) => {
-  //   el.addEventListener("click", async (event) => {
-  //     let city = event.target.closest(".favorite-city").dataset.city;
-  //     await renderLoadScreen(city);
-  //     await renderWeatherData(city);
-  //   });
-  // });
 }
 
 // Ende von Start Screen
@@ -319,8 +290,6 @@ async function renderWeatherData(cityName) {
       .icon;
   }
 
-  // getHourlyTemperature(, 1);
-
   let hourlyForecastDetailsEl = document.querySelector(
     ".hourly-forecast__details",
   );
@@ -389,8 +358,6 @@ async function init() {
 }
 
 init();
-
-// 1
 
 async function renderClickedCity(event) {
   const el = event.target.closest(".favorite-city");

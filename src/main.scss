@@ -1,5 +1,5 @@
-@use "mixins";
-@use "variable";
+@use "mixins" as *;
+@use "variable" as *;
 @use "loading";
 @use "forecastContainers";
 @use "startScreen";
@@ -16,12 +16,9 @@
 }
 
 body {
-  background-color: #39495e;
+  background-color: $background-color;
   display: flex;
   justify-content: center;
-  // @include largeScreen {
-  //   // Falls für großen bildschirm (über 700px) etwas gewünscht wird
-  // }
 }
 
 .app {
@@ -31,6 +28,9 @@ body {
   text-shadow: 1px 1px 5px #000;
   background: linear-gradient(0deg, #404547, #252e3a 51%);
   border-radius: 10px;
+  @include largeScreen {
+    width: 500px;
+  }
 }
 
 .loading {
