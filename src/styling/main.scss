@@ -3,6 +3,7 @@
 @use "loading";
 @use "forecastContainers";
 @use "startScreen";
+@use "searchBar";
 
 * {
   margin: 0;
@@ -29,7 +30,7 @@ body {
   background: linear-gradient(0deg, #404547, #252e3a 51%);
   border-radius: 10px;
   @include largeScreen {
-    width: 500px;
+    width: 450px;
   }
 }
 

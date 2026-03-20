@@ -36,17 +36,17 @@ export async function getWeatherForecast(location, language) {
   return response;
 }
 
-// export async function getSearchLocation(location, language) {
-//   let request = await fetch(
-//     mainApi +
-//       `search.json?` +
-//       personalkey +
-//       `&q=` +
-//       location +
-//       `&lang=` +
-//       language +
-//       `&days=3`,
-//   );
-//   let response = await request.json();
-//   return response;
-// }
+export async function getSearchLocation(location, language) {
+  let request = await fetch(
+    mainApi +
+      `search.json?` +
+      personalkey +
+      `&q=` +
+      location +
+      `&lang=` +
+      language +
+      `&days=3`,
+  );
+  let response = await request.json();
+  return response;
+}

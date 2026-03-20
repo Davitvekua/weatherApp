@@ -3,6 +3,7 @@ import { renderStartScreen, renderFavoriteCites } from "./startScreen.js";
 import { renderLoadScreen } from "./loadScreen.js";
 import { renderWeatherData } from "./weatherDataScreen.js";
 import "./styling/main.scss";
+import { rendertypedCity } from "./searchScreen.js";
 
 console.log("main.js geladen");
 
@@ -90,10 +91,12 @@ async function renderClickedCity(event) {
 }
 document.addEventListener("click", renderClickedCity);
 
-export async function rendertypedCity() {
-  const inputDesiredCity = document.querySelector(".search-input");
-  if (!inputDesiredCity) return;
-  const city = inputDesiredCity.value;
-  await renderLoadScreen(city);
-  await renderWeatherData(city);
-}
+// export async function rendertypedCity() {
+//   const inputDesiredCity = document.querySelector(".search-input");
+//   if (!inputDesiredCity) return;
+//   const city = inputDesiredCity.value;
+//   await renderLoadScreen(city);
+//   await renderWeatherData(city);
+// }
+
+rendertypedCity();

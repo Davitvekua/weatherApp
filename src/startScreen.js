@@ -1,10 +1,6 @@
-import {
-  rendertypedCity,
-  favoriteCitiesArray,
-  language,
-  createFavoriteCity,
-} from "./main.js";
+import { favoriteCitiesArray, language, createFavoriteCity } from "./main.js";
 import { getCurrentWeather, getWeatherForecast } from "./fetch.js";
+import { rendertypedCity } from "./searchScreen.js";
 
 export function renderStartScreen() {
   const mainScreenEl = document.querySelector(".app");
@@ -19,6 +15,7 @@ export function renderStartScreen() {
           type="text"
           placeholder="Nach Stadt suchen..."
         />
+        <div class="search-container"></div>
         <div class="start-screen__favorite-cities"></div>
       </div>`;
 
@@ -76,7 +73,6 @@ export function renderStartScreen() {
 }
 
 export async function renderFavoriteCites() {
-  console.log("hallo");
   let favoriteCityEl = document.querySelector(".start-screen__favorite-cities");
   favoriteCityEl.innerHTML = "";
 

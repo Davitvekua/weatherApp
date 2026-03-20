@@ -1,0 +1,13 @@
+.search-container {
+  background-color: rgb(21, 17, 17);
+
+  &__location {
+    border-bottom: 0.2px solid rgb(72, 72, 72);
+    padding: 0.8rem 0.8rem 0.8rem 0.8rem;
+
+    &__name {
+      font-size: 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+  }
+}
