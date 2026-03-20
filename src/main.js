@@ -2,7 +2,7 @@ import { getConditionImagePath } from "./conditions.js";
 import { renderStartScreen, renderFavoriteCites } from "./startScreen.js";
 import { renderLoadScreen } from "./loadScreen.js";
 import { renderWeatherData } from "./weatherDataScreen.js";
-import "./main.scss";
+import "./styling/main.scss";
 
 console.log("main.js geladen");
 
@@ -80,8 +80,6 @@ export async function init() {
   await renderStartScreen();
   await renderFavoriteCites();
 }
-
-// init();
 
 async function renderClickedCity(event) {
   const el = event.target.closest(".favorite-city");

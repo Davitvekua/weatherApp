@@ -1,3 +1,4 @@
 import { init } from "./main.js";
-console.log("fisrtmain.js geladen");
+
+console.log("forHtml.js geladen");
 init();
