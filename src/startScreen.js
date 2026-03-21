@@ -15,17 +15,19 @@ export function renderStartScreen() {
           type="text"
           placeholder="Nach Stadt suchen..."
         />
-        <div class="search-container"></div>
+        <div class="search-container-parent"><div class="search-container"></div></div>
         <div class="start-screen__favorite-cities"></div>
       </div>`;
 
   document
     .querySelector(".search-input")
-    .addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        rendertypedCity(event);
-      }
-    });
+    .addEventListener("input", rendertypedCity);
+
+  // document.querySelector(".search-input").addEventListener("input", (event) => {
+  //   if (event.key === "Enter") {
+  //     rendertypedCity(event);
+  //   }
+  // });
 
   document.querySelector(".top-menu__edit").addEventListener("click", () => {
     document

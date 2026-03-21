@@ -1,13 +1,30 @@
 .search-container {
   background-color: rgb(21, 17, 17);
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  position: absolute;
+  transform: translateZ(100px); // für iOS
+  z-index: 2;
+  left: 0;
+  right: 0;
 
   &__location {
-    border-bottom: 0.2px solid rgb(72, 72, 72);
-    padding: 0.8rem 0.8rem 0.8rem 0.8rem;
+    border-top: 0.2px solid rgb(72, 72, 72);
+    padding: 0.5rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgb(73, 70, 70);
+    }
 
     &__name {
       font-size: 1.2rem;
       margin-bottom: 0.2rem;
     }
   }
+}
+
+.search-container-parent {
+  background-color: transparent;
+  position: relative;
 }
