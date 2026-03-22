@@ -23,4 +23,22 @@ export async function renderTypedCitiesInSearchBar() {
   <div class="search-container__location__country">${el.country}</div></div>`;
   });
   rendertypedCity();
+
+  document.addEventListener("click", (event) => {
+    if (
+      !event.target.closest(".search-container-parent") &&
+      !event.target.closest(".search-input")
+    ) {
+      document
+        .querySelector(".search-container-parent")
+        .classList.add("search-container-parent-hidden");
+    } else if (
+      event.target.closest(".search-container-parent") ||
+      event.target.closest(".search-input")
+    ) {
+      document
+        .querySelector(".search-container-parent")
+        .classList.remove("search-container-parent-hidden");
+    }
+  });
 }
