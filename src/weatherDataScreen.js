@@ -7,9 +7,9 @@ import {
 import { getCurrentWeather, getWeatherForecast } from "./fetch.js";
 import { getConditionImagePath } from "./conditions.js";
 
-export async function renderWeatherData(cityName) {
-  let currentWatherData = await getCurrentWeather(cityName, language);
-  let forecastWatherData = await getWeatherForecast(cityName, language);
+export async function renderWeatherData(cityId) {
+  let currentWatherData = await getCurrentWeather(cityId, language);
+  let forecastWatherData = await getWeatherForecast(cityId, language);
 
   let currentTime = currentWatherData.location.localtime;
   let hour = Number(currentTime.split(" ")[1].split(":")[0]);
@@ -57,7 +57,7 @@ export async function renderWeatherData(cityName) {
         </div>
         <div class="weather-main-data">
           <div class="test"></div>
-          <div class="weather-main-data__city-name">
+          <div class="weather-main-data__city-name" data-cityId="${cityId}" data-city="${currentWatherData.location.name}">
             ${currentWatherData.location.name}
           </div>
           <div class="weather-main-data__temperature">
@@ -164,9 +164,9 @@ export async function renderWeatherData(cityName) {
     .querySelector(".top-buttons__back")
     .addEventListener("click", renderStartScreenBack);
 
-  let typedCityName = cityName;
+  let typedCityId = cityId;
 
-  if (favoriteCitiesArray.some((city) => city.cityName === typedCityName)) {
+  if (favoriteCitiesArray.some((city) => city.cityId === cityId)) {
     document
       .querySelector(".favorite-button")
       .classList.add("favorite-button-filled");

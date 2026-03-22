@@ -1,6 +1,6 @@
 import { favoriteCitiesArray, language, createFavoriteCity } from "./main.js";
 import { getCurrentWeather, getWeatherForecast } from "./fetch.js";
-import { rendertypedCity } from "./searchScreen.js";
+import { renderTypedCitiesInSearchBar } from "./searchScreen.js";
 
 export function renderStartScreen() {
   const mainScreenEl = document.querySelector(".app");
@@ -21,13 +21,7 @@ export function renderStartScreen() {
 
   document
     .querySelector(".search-input")
-    .addEventListener("input", rendertypedCity);
-
-  // document.querySelector(".search-input").addEventListener("input", (event) => {
-  //   if (event.key === "Enter") {
-  //     rendertypedCity(event);
-  //   }
-  // });
+    .addEventListener("input", renderTypedCitiesInSearchBar);
 
   document.querySelector(".top-menu__edit").addEventListener("click", () => {
     document
@@ -43,16 +37,16 @@ export function renderStartScreen() {
         .querySelectorAll(".favorite-city-container__delete-button")
         .forEach((el) => {
           el.addEventListener("click", (event) => {
-            let currentContainerCity = event.target.closest(
+            let currentContainerCityId = event.target.closest(
               ".favorite-city-container__delete-button",
-            ).dataset.city;
+            ).dataset.cityid;
 
             // favoriteCitiesArray = favoriteCitiesArray.filter(
             //   (el) => el.cityName !== currentContainerCity,
             // );
 
             let data = favoriteCitiesArray.filter(
-              (el) => el.cityName !== currentContainerCity,
+              (el) => el.cityId !== currentContainerCityId,
             );
 
             favoriteCitiesArray.length = 0;
@@ -87,8 +81,8 @@ export async function renderFavoriteCites() {
   favoriteCitiesArray.push(...data);
 
   for (let el of favoriteCitiesArray) {
-    let currentWatherData = await getCurrentWeather(el.cityName, language);
-    let forecastWatherData = await getWeatherForecast(el.cityName, language);
+    let currentWatherData = await getCurrentWeather(el.cityId, language);
+    let forecastWatherData = await getWeatherForecast(el.cityId, language);
     createFavoriteCity(
       currentWatherData.current.condition.code,
       currentWatherData.current.is_day,
@@ -98,6 +92,7 @@ export async function renderFavoriteCites() {
       currentWatherData.current.condition.text,
       Math.floor(forecastWatherData.forecast.forecastday[0].day.maxtemp_c),
       Math.floor(forecastWatherData.forecast.forecastday[0].day.mintemp_c),
+      el.cityId,
     );
   }
 }

@@ -2,15 +2,15 @@ const mainApi = `https://api.weatherapi.com/v1/`;
 const personalkey = `key=809d5f390de3480fa3e125039260903`;
 
 const currentWeatherApi =
-  "https://api.weatherapi.com/v1/current.json?key=809d5f390de3480fa3e125039260903&q=Ansbach&lang=de";
+  "https://api.weatherapi.com/v1/current.json?key=809d5f390de3480fa3e125039260903&q=id:2322383&lang=de";
 
-export async function getCurrentWeather(location, language) {
+export async function getCurrentWeather(cityId, language) {
   let request = await fetch(
     mainApi +
       `current.json?` +
       personalkey +
-      `&q=` +
-      location +
+      `&q=id:` +
+      cityId +
       `&lang=` +
       language,
   );
@@ -19,15 +19,15 @@ export async function getCurrentWeather(location, language) {
 }
 
 const forecastWeatherApi =
-  "https://api.weatherapi.com/v1/forecast.json?key=809d5f390de3480fa3e125039260903&q=Ansbach&lang=de&days=3";
+  "https://api.weatherapi.com/v1/forecast.json?key=809d5f390de3480fa3e125039260903&q=id:2322383&lang=de&days=3";
 
-export async function getWeatherForecast(location, language) {
+export async function getWeatherForecast(cityId, language) {
   let request = await fetch(
     mainApi +
       `forecast.json?` +
       personalkey +
-      `&q=` +
-      location +
+      `&q=id:` +
+      cityId +
       `&lang=` +
       language +
       `&days=3`,
