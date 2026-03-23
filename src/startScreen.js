@@ -1,4 +1,9 @@
-import { favoriteCitiesArray, language, createFavoriteCity } from "./main.js";
+import {
+  favoriteCitiesArray,
+  language,
+  createFavoriteCity,
+  debounce,
+} from "./main.js";
 import { getCurrentWeather, getWeatherForecast } from "./fetch.js";
 import { renderTypedCitiesInSearchBar } from "./searchScreen.js";
 
@@ -21,7 +26,7 @@ export function renderStartScreen() {
 
   document
     .querySelector(".search-input")
-    .addEventListener("input", renderTypedCitiesInSearchBar);
+    .addEventListener("input", debounce(renderTypedCitiesInSearchBar, 500));
 
   document.querySelector(".top-menu__edit").addEventListener("click", () => {
     document

@@ -81,6 +81,10 @@
   &__condition {
     display: flex;
     align-items: end;
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   &__temperature {
