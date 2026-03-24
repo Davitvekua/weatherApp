@@ -78,6 +78,13 @@
     font-size: 1.5rem;
   }
 
+  &__name__country {
+    min-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
   &__condition {
     display: flex;
     align-items: end;
